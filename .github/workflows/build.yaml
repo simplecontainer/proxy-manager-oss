@@ -100,10 +100,7 @@ jobs:
           COMPONENT="${{ github.event.inputs.component }}"
           
           VERSION=$(cat version)
-          VERSION=$(.github/scripts/version.sh "$VERSION_SMR" "${{ github.event.head_commit.message }}")
-
-          echo $(cat version)
-          echo $VERSION
+          VERSION=$(.github/scripts/version.sh "$VERSION" "${{ github.event.head_commit.message }}")
 
           TAG="${VERSION}"
 
