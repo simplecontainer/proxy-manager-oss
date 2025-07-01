@@ -55,7 +55,7 @@ jobs:
         go-version: [ '1.22.x' ]
         platform: [ 'amd64', 'arm64' ]
         os: [ 'linux' ]
-        component: ['smr','smrctl']
+        component: ['proxy-manager-oss']
     steps:
       - uses: actions/checkout@v4
         with:
@@ -73,22 +73,21 @@ jobs:
           
           VERSION=$(.github/scripts/version.sh "VERSION" "${{ github.event.head_commit.message }}")
           
-          echo "VERSION" > cmd/smr/version.tmp
+          echo "VERSION" > version.tmp
           
           mv version.tmp version
       - name: Build ${{ matrix.component }} for ${{ matrix.os }} on ${{ matrix.platform }}
         if: matrix.component == 'proxy-manager-oss' || github.event_name != 'workflow_dispatch'
-        working-directory: "cmd/${{matrix.component}}"
         run: |
           VERSION=$(cat version)
           CGO_ENABLED=0 GOOS=${{ matrix.os }} GOARCH=${{ matrix.platform }} go build -ldflags "-s -w -X main.version=$VERSION" -o ${{matrix.component}}-${{ matrix.os }}-${{ matrix.platform }}
           chmod +x ${{ matrix.component }}-${{ matrix.os }}-${{ matrix.platform }}
-      - name: Upload smr artifacts
-        if: matrix.component == 'smr' || matrix.component == 'smrctl' || github.event.inputs.component == 'all' || github.event_name != 'workflow_dispatch'
+      - name: Upload proxy-manager-oss artifacts
+        if: matrix.component == 'proxy-manager-oss' || github.event_name != 'workflow_dispatch'
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.component }}-${{ matrix.os}}-${{ matrix.platform }}
-          path: cmd/${{ matrix.component }}/${{ matrix.component }}-${{ matrix.os }}-${{ matrix.platform }}
+          path: ${{ matrix.component }}/${{ matrix.component }}-${{ matrix.os }}-${{ matrix.platform }}
 
   prepare-release:
     if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'

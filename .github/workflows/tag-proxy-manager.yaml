@@ -3,7 +3,7 @@ name: Release proxy-manager
 on:
   push:
     tags:
-      - 'smr-v[0-9]+.[0-9]+.[0-9]+'
+      - 'v[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
   build:
@@ -24,12 +24,12 @@ jobs:
           go-version: ${{ matrix.go-version }}
       - name: Display Go version
         run: go version
-      - name: Build smr
+      - name: Build proxy-manager-oss
         run: |
           VERSION=$(cat version)
           CGO_ENABLED=0 GOOS=${{ matrix.os }} GOARCH=${{ matrix.platform }} go build -ldflags "-s -w -X main.version=$VERSION" -o proxy-manager-oss-${{ matrix.os }}-${{ matrix.platform }}
-          chmod +x smr-${{ matrix.os }}-${{ matrix.platform }}
-      - name: Upload smr artifacts
+          chmod +x proxy-manager-oss-${{ matrix.os }}-${{ matrix.platform }}
+      - name: Upload proxy-manager-oss artifacts
         uses: actions/upload-artifact@v4
         with:
           name: proxy-manager-oss-${{ matrix.os}}-${{ matrix.platform }}
