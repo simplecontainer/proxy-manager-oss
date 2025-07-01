@@ -1,0 +1,16 @@
+*
+!.gitattributes
+!.gitignore
+!readme.md
+!.gitkeep
+!*.go
+!*.mod
+!*.sh
+!*.md
+!*.json
+!*.yaml
+!LICENSE
+!Makefile
+!Dockerfile
+!version
+!*/
