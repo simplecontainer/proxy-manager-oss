@@ -65,7 +65,7 @@ jobs:
           
           VERSION=$(.github/scripts/version.sh "VERSION" "${{ github.event.head_commit.message }}")
           
-          echo "VERSION" > version.tmp
+          echo "$VERSION" > version.tmp
           
           mv version.tmp version
       - name: Build ${{ matrix.component }} for ${{ matrix.os }} on ${{ matrix.platform }}
@@ -86,7 +86,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build]
     outputs:
-      tag_smr: ${{ steps.generate_tag.outputs.tag }}
+      tag: ${{ steps.generate_tag.outputs.tag }}
       matrix: ${{ steps.generate_tag.outputs.matrix }}
     steps:
       - uses: actions/checkout@v4
@@ -101,6 +101,9 @@ jobs:
           
           VERSION=$(cat version)
           VERSION=$(.github/scripts/version.sh "$VERSION_SMR" "${{ github.event.head_commit.message }}")
+
+          echo $(cat version)
+          echo $VERSION
 
           TAG="${VERSION}"
 
