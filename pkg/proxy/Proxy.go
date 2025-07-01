@@ -4,7 +4,7 @@ import (
 	"crypto/tls"
 	"fmt"
 	"github.com/gorilla/websocket"
-	"gitlab.com/simplecontainer/proxy-manager-oss/pkg/configuration"
+	"github.com/simplecontainer/proxy-manager-oss/pkg/configuration"
 	"log"
 	"net/http"
 	"net/url"

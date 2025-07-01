@@ -20,14 +20,6 @@ on:
         type: choice
         options:
           - proxy-manager-oss
-      test_name:
-        description: 'Optional test name to run'
-        required: false
-        type: string
-      test_flags:
-        description: 'Optional test flags'
-        required: false
-        type: string
 
 jobs:
   test:

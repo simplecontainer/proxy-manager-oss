@@ -3,8 +3,8 @@ package api
 import (
 	"encoding/base64"
 	"github.com/gin-gonic/gin"
-	"gitlab.com/simplecontainer/proxy-manager-oss/pkg/logger"
-	"gitlab.com/simplecontainer/proxy-manager-oss/pkg/proxy"
+	"github.com/simplecontainer/proxy-manager-oss/pkg/logger"
+	"github.com/simplecontainer/proxy-manager-oss/pkg/proxy"
 	"go.uber.org/zap"
 	"net/http"
 )

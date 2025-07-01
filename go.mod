@@ -1,4 +1,4 @@
-module gitlab.com/simplecontainer/proxy-manager-oss
+module github.com/simplecontainer/proxy-manager-oss
 
 go 1.23.0
 

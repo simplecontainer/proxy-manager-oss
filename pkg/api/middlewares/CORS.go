@@ -2,7 +2,7 @@ package middlewares
 
 import (
 	"github.com/gin-gonic/gin"
-	"gitlab.com/simplecontainer/proxy-manager-oss/pkg/configuration"
+	"github.com/simplecontainer/proxy-manager-oss/pkg/configuration"
 )
 
 func CORS(config *configuration.Configuration) gin.HandlerFunc {

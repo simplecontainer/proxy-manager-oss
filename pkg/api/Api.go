@@ -1,8 +1,8 @@
 package api
 
 import (
-	"gitlab.com/simplecontainer/proxy-manager-oss/pkg/configuration"
-	"gitlab.com/simplecontainer/proxy-manager-oss/pkg/proxy"
+	"github.com/simplecontainer/proxy-manager-oss/pkg/configuration"
+	"github.com/simplecontainer/proxy-manager-oss/pkg/proxy"
 )
 
 func New(config *configuration.Configuration) *Api {

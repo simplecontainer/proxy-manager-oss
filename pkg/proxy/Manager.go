@@ -3,7 +3,7 @@ package proxy
 import (
 	"errors"
 	"github.com/gorilla/websocket"
-	"gitlab.com/simplecontainer/proxy-manager-oss/pkg/logger"
+	"github.com/simplecontainer/proxy-manager-oss/pkg/logger"
 	"go.uber.org/zap"
 	"sync"
 	"time"
