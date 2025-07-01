@@ -1,4 +1,4 @@
-name: Release smr
+name: Release proxy-manager
 
 on:
   push:
