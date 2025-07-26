@@ -3,6 +3,7 @@ package proxy
 import (
 	"fmt"
 	"github.com/gorilla/websocket"
+	"github.com/simplecontainer/proxy-manager-oss/pkg/api/middlewares"
 	"github.com/simplecontainer/proxy-manager-oss/pkg/configuration"
 	"github.com/simplecontainer/proxy-manager-oss/pkg/logger"
 	"go.uber.org/zap"
@@ -15,11 +16,7 @@ import (
 func StartMasterProxy(mgr *Manager, config *configuration.Configuration) error {
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodOptions {
-			w.Header().Set("Access-Control-Allow-Origin", config.AllowOrigin)
-			w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-			w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Upstream, Authorization")
-			w.Header().Set("Access-Control-Allow-Credentials", "true")
-
+			middlewares.SetCORSHeaders(w, config.AllowOrigin)
 			w.WriteHeader(http.StatusNoContent)
 			return
 		}
@@ -48,6 +45,11 @@ func StartMasterProxy(mgr *Manager, config *configuration.Configuration) error {
 
 			w.WriteHeader(http.StatusBadGateway)
 			w.Write([]byte("Bad Gateway"))
+		}
+
+		p.ModifyResponse = func(r *http.Response) error {
+			middlewares.SetCORSHeaders(&headerWrapper{r.Header}, config.AllowOrigin)
+			return nil
 		}
 
 		p.ServeHTTP(w, r)
@@ -110,10 +112,6 @@ func WebSocket(w http.ResponseWriter, r *http.Request, p *Proxy) {
 		Subprotocols:    []string{"Authorization"},
 	}
 
-	//if requestHeader.Get("Authorization") == "" {
-	//	requestHeader.Set("Authorization", UUID.String())
-	//}
-
 	serverConn, resp, err := dialer.Dial(wssURL, requestHeader)
 	if err != nil {
 		logger.Log.Error("Failed to connect to upstream WebSocket", zap.Error(err), zap.Any("response", resp))
@@ -161,3 +159,17 @@ func WebSocket(w http.ResponseWriter, r *http.Request, p *Proxy) {
 
 	<-errorChan
 }
+
+type headerWrapper struct {
+	header http.Header
+}
+
+func (h *headerWrapper) Header() http.Header {
+	return h.header
+}
+
+func (h *headerWrapper) Write([]byte) (int, error) {
+	return 0, nil
+}
+
+func (h *headerWrapper) WriteHeader(statusCode int) {}
